@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Travel Planner (web app)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "travel_planner",
+      "args": ["serve", "--open"],
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal",
+      "justMyCode": true
+    },
+    {
+      "name": "Check model connection",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "travel_planner",
+      "args": ["check"],
+      "envFile": "${workspaceFolder}/.env",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Fake model server (for demos)",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "tests.fake_llm",
+      "args": ["--port", "11500", "--mode", "messy"],
+      "console": "integratedTerminal"
+    }
+  ]
+}
