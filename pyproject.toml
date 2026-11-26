@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "multi-agent-travel-planner"
+version = "1.0.0"
+description = "Multi-agent travel planner (LangGraph) with a web UI. Works with Ollama, OpenAI or offline."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+dependencies = [
+    "fastapi>=0.110",
+    "uvicorn>=0.27",
+    "openai>=1.40",
+    "langgraph>=0.4",
+    "pydantic>=2.6",
+    "httpx>=0.26",
+    "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23", "ruff>=0.4"]
+
+[project.scripts]
+travel-planner = "travel_planner.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["travel_planner*"]
+
+[tool.setuptools.package-data]
+travel_planner = ["web/*"]
+
+[tool.ruff]
+line-length = 130
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501", "B008"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]
+pythonpath = ["."]

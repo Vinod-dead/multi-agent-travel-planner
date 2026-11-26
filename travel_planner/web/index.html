@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Travel Planner</title>
+  <meta name="description" content="Plan a trip with a team of AI agents: destination, flights, stays, transport, itinerary and budget.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%231A2530'/%3E%3Cpath d='M7 19l18-9-5 14-4-6z' fill='%23FFC20E'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to results</a>
+
+<header class="topbar">
+  <div class="brand">
+    <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#1A2530"/><path d="M7 19l18-9-5 14-4-6z" fill="#FFC20E"/></svg>
+    <span>Travel Planner</span>
+  </div>
+  <div class="topbar-actions">
+    <button class="status" id="status" type="button" title="Language model status. Click to re-check."><span class="dot"></span><span id="status-text">Checking model...</span></button>
+    <button class="btn ghost" id="history-btn" type="button" aria-expanded="false" aria-controls="history">History</button>
+  </div>
+</header>
+
+<aside class="history" id="history" hidden aria-label="Saved plans">
+  <div class="history-head"><h2>Saved plans</h2><button class="btn ghost small" id="history-close" type="button">Close</button></div>
+  <ul id="history-list"></ul>
+  <p class="muted" id="history-empty" hidden>No plans yet. Fill in the form and press Plan my trip.</p>
+</aside>
+
+<div class="layout">
+  <section class="panel form-panel" aria-labelledby="form-title">
+    <h1 id="form-title">Where to next?</h1>
+    <form id="trip-form" novalidate>
+      <div class="row2">
+        <label>From
+          <input name="origin" autocomplete="off" placeholder="Bengaluru" maxlength="80">
+        </label>
+        <label>To
+          <input name="destination" autocomplete="off" placeholder="Empty = suggest for me" maxlength="80">
+        </label>
+      </div>
+
+      <div class="row3">
+        <label>Start date
+          <input type="date" name="start_date">
+        </label>
+        <label>End date
+          <input type="date" name="end_date">
+        </label>
+        <label>or days
+          <input type="number" name="days" min="1" max="21" value="5" inputmode="numeric">
+        </label>
+      </div>
+
+      <div class="row3">
+        <label>Travellers
+          <input type="number" name="travelers" min="1" max="12" value="2" inputmode="numeric" required>
+        </label>
+        <label>Total budget
+          <input type="number" name="budget" min="1" step="any" value="60000" inputmode="decimal" required>
+        </label>
+        <label>Currency
+          <select name="currency">
+            <option>INR</option><option>USD</option><option>EUR</option><option>GBP</option>
+            <option>AED</option><option>SGD</option><option>THB</option><option>JPY</option>
+            <option>AUD</option><option>CAD</option>
+          </select>
+        </label>
+      </div>
+
+      <fieldset>
+        <legend>Travel style</legend>
+        <div class="segmented" role="radiogroup">
+          <label><input type="radio" name="style" value="budget"><span>Budget</span></label>
+          <label><input type="radio" name="style" value="balanced" checked><span>Balanced</span></label>
+          <label><input type="radio" name="style" value="luxury"><span>Luxury</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Interests</legend>
+        <div class="chips" id="chips"></div>
+        <input id="custom-interest" placeholder="Add your own and press Enter" maxlength="40" autocomplete="off" aria-label="Add a custom interest">
+      </fieldset>
+
+      <label>Anything else?
+        <textarea name="notes" rows="2" maxlength="600" placeholder="Vegetarian food, travelling with a toddler, no early mornings..."></textarea>
+      </label>
+
+      <label class="check"><input type="checkbox" name="include_flights" checked> Include flights</label>
+
+      <details class="advanced">
+        <summary>Model settings</summary>
+        <label>Model
+          <input name="model" list="model-list" placeholder="Use the server default" autocomplete="off" maxlength="80">
+          <datalist id="model-list"></datalist>
+        </label>
+      </details>
+
+      <p class="form-error" id="form-error" role="alert" hidden></p>
+      <button class="btn primary wide" id="submit" type="submit">Plan my trip</button>
+    </form>
+  </section>
+
+  <main class="results" id="main" tabindex="-1" aria-live="polite">
+    <section class="board" id="board" hidden aria-label="Planning progress">
+      <div class="board-head">
+        <h2 id="board-title">Departures</h2>
+        <button class="btn board-btn" id="cancel-btn" type="button" hidden>Cancel</button>
+      </div>
+      <ol class="board-rows" id="board-rows"></ol>
+      <p class="board-foot" id="board-foot"></p>
+    </section>
+
+    <section class="empty" id="empty">
+      <h2>Your plan will appear here</h2>
+      <p>A team of agents researches the destination, then looks at flights, places to stay, local transport and activities at the same time. A final check adds up the budget.</p>
+      <p class="muted">No model running? You still get a budget-based estimate, clearly labelled.</p>
+    </section>
+
+    <article id="plan" hidden></article>
+  </main>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>

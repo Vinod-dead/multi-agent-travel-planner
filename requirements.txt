@@ -1,0 +1,8 @@
+# Runtime dependencies (kept deliberately small)
+fastapi>=0.110
+uvicorn>=0.27
+openai>=1.40          # client for any OpenAI-compatible server (Ollama, OpenAI, LM Studio, ...)
+langgraph>=0.4        # agent graph / parallel orchestration
+pydantic>=2.6
+httpx>=0.26
+python-dotenv>=1.0
